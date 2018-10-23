@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+        maven { url "https://dl.bintray.com/kotlin/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/ktor" }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+//apply plugin: 'kotlin-kapt'
+
+//kapt {
+//    generateStubs = true
+//}
+
+repositories {
+    mavenCentral()
+}
+
+//sourceSets {
+//    main {
+//        java {
+//            srcDir "${buildDir.absolutePath}/tmp/kapt/main/kotlinGenerated/"
+//        }
+//    }
+//}
+
+mainClassName = "com.negusoft.ktor.controller.sample.ApplicationKt"
+
+sourceSets {
+    main.kotlin.srcDirs = [ 'src' ]
+    main.resources.srcDirs = [ 'resources' ]
+}
+
+dependencies {
+    ext.ktor_version = '1.0.0-beta-1'
+    ext.logback_version = '1.2.3'
+
+//    kapt project(":generator")
+//    compileOnly project(":generator")
+//    compile "io.ktor:ktor-server-jetty:$ktor_version"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
+    compile "io.ktor:ktor-html-builder:$ktor_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "ch.qos.logback:logback-classic:$logback_version"
+}
+
+kotlin.experimental.coroutines = 'enable'
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
