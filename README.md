@@ -1,3 +1,3 @@
-# kotlin-code-gen-sample
+# Ktor Controller
 
-Code for the article: https://proandroiddev.com/hello-world-of-annotation-processing-in-kotlin-3ec0290c1fdd
+A proof of concept to implement a Ktor feature to implement controllers using annotations

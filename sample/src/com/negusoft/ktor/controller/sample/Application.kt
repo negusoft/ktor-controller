@@ -33,8 +33,10 @@ fun Application.main() {
         get("/") {
             call.respondText("Hello World!")
         }
-        get("/demo") {
-            throw Exception("asdf")
+        get("/hello/{name}") {
+            val name = call.parameters["name"] ?: "world"
+            call.respondText("Hello $name!")
         }
+        setup(HelloController())
     }
 }
