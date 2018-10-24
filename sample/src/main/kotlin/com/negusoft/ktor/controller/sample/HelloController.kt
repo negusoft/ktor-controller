@@ -11,7 +11,7 @@ import io.ktor.routing.get
 /**
  * Defines the API endpoint implementations.
  */
-@RouteController("/controller")
+@RouteController
 class HelloController {
 
     fun getHello(name: String): String {
@@ -21,7 +21,7 @@ class HelloController {
     @Get("/{name}")
     suspend fun getHelloWithCall(call: ApplicationCall) {
         val name = call.parameters["name"] ?: "world"
-        call.respondText("Hello $name!")
+        call.respondText("[HelloController] Hello $name!")
     }
 
 }
