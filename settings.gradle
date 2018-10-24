@@ -1,4 +1,5 @@
 rootProject.name = 'ktor-controller'
 include 'core'
+include 'reflection'
 include 'sample'
 

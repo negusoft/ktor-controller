@@ -51,7 +51,7 @@ dependencies {
     compile "ch.qos.logback:logback-classic:$logback_version"
 
 //    implementation project(":core")
-    compile project(":core")
+    compile project(":reflection")
 }
 
 kotlin.experimental.coroutines = 'enable'

@@ -24,7 +24,10 @@ sourceSets {
 }
 
 dependencies {
+    ext.ktor_version = '1.0.0-beta-1'
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
 }
 
 compileKotlin {

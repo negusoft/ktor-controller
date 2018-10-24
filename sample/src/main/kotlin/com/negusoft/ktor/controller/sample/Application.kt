@@ -1,5 +1,6 @@
 package com.negusoft.ktor.controller.sample
 
+import com.negusoft.ktor.controller.reflect.setupController
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.html.*
@@ -37,6 +38,6 @@ fun Application.main() {
             val name = call.parameters["name"] ?: "world"
             call.respondText("Hello $name!")
         }
-        setup(HelloController())
+        setupController(HelloController())
     }
 }
