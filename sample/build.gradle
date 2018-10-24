@@ -33,8 +33,9 @@ repositories {
 mainClassName = "com.negusoft.ktor.controller.sample.ApplicationKt"
 
 sourceSets {
-    main.kotlin.srcDirs = [ 'src' ]
-    main.resources.srcDirs = [ 'resources' ]
+    main {
+        resources.srcDirs += [ 'src/main/resources' ]
+    }
 }
 
 dependencies {
@@ -48,6 +49,9 @@ dependencies {
     compile "io.ktor:ktor-html-builder:$ktor_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "ch.qos.logback:logback-classic:$logback_version"
+
+//    implementation project(":core")
+    compile project(":core")
 }
 
 kotlin.experimental.coroutines = 'enable'
