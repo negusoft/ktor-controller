@@ -7,10 +7,9 @@ import io.ktor.application.call
 import io.ktor.http.HttpMethod
 import io.ktor.pipeline.PipelineInterceptor
 import io.ktor.routing.*
-import kotlin.reflect.KAnnotatedElement
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
+import kotlin.reflect.*
 import kotlin.reflect.full.callSuspend
+import kotlin.reflect.full.createType
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.functions
 
@@ -59,16 +58,43 @@ private class FunctionMapping(
         fun <R> fromFunction(owner: Any, func: KFunction<R>): FunctionMapping? {
             val getAnnotation = func.findAnnotation<Get>() ?: return null
             val path = getAnnotation.path
-            val handler = func.toFunctionCall(owner)
+            val paramMappings = func.getParameterMappings(owner)
+            val handler = func.toFunctionCall(owner, paramMappings)
             return FunctionMapping(path, HttpMethod.Get) { handle(handler) }
         }
 
-        private fun <R> KFunction<R>.toFunctionCall(owner: Any): PipelineInterceptor<Unit, ApplicationCall> {
+        private fun <R> KFunction<R>.toFunctionCall(owner: Any, paramMappings: List<ParamMapping>): PipelineInterceptor<Unit, ApplicationCall> {
             return if (isSuspend) {
-                { callSuspend(owner, call) }
+                { _ ->
+                    val params = paramMappings.map { it(call) }.toTypedArray()
+                    callSuspend(*params)
+                }
             } else {
-                { call(owner, call) }
+                { _ ->
+                    val params = paramMappings.map { it(call) }.toTypedArray()
+                    call(*params)
+                }
+            }
+        }
+
+        private fun <R> KFunction<R>.getParameterMappings(owner: Any): List<ParamMapping> {
+            return parameters.mapIndexed<KParameter, ParamMapping> { i, param ->
+                // The first param is the call receiver
+                if (i == 0)
+                    return@mapIndexed { owner }
+
+                // Detect the parameters using the provided detectors
+                for (detector in defaultParamDetectors) {
+                    detector(param)?.let { return@mapIndexed it }
+                }
+
+                // When no detectors recognise the parameter
+                error("Param not '${param.name}' supported")
             }
         }
     }
 }
+
+private val defaultParamDetectors = listOf<ParamDetector>(
+        ParamDetectors.callDetector()
+)
