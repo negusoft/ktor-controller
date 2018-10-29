@@ -92,6 +92,6 @@ private fun <R> KFunction<R>.getParameterMappings(owner: Any, paramDetectors: Li
         }
 
         // When no detectors recognise the parameter
-        error("Param not '${param.name}' supported")
+        error("Param not '${param.name}' supported in ${this}")
     }
 }

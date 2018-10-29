@@ -33,5 +33,7 @@ private fun <T : Any> Routing.setupFunctions(controller: Any, kclass: KClass<out
 }
 
 private val defaultParamDetectors = listOf<ParamDetector>(
-        ParamDetectors.CallDetector
+        ParamDetectors.CallDetector,
+        ParamDetectors.PathParamDetector,
+        ParamDetectors.QueryParamDetector
 )

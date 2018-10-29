@@ -1,6 +1,8 @@
 package com.negusoft.ktor.controller.sample
 
 import com.negusoft.ktor.controller.Get
+import com.negusoft.ktor.controller.PathParam
+import com.negusoft.ktor.controller.QueryParam
 import com.negusoft.ktor.controller.RouteController
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
@@ -19,9 +21,9 @@ class HelloController {
     }
 
     @Get("/{name}")
-    suspend fun getHelloWithCall(call: ApplicationCall) {
-        val name = call.parameters["name"] ?: "world"
-        call.respondText("[HelloController] Hello $name!")
+    suspend fun getHelloWithCall(call: ApplicationCall, @PathParam name: String, @QueryParam query: String) {
+//        val name = call.parameters["name"] ?: "world"
+        call.respondText("[HelloController] Hello $name! by $query")
     }
 
 }
@@ -31,6 +33,6 @@ class HelloController {
  */
 fun Routing.setup(controller: HelloController) {
     get("/controller/{name}") {
-        controller.getHelloWithCall(call)
+        controller.getHelloWithCall(call, call.parameters["name"] ?: "", "Negusoft")
     }
 }
