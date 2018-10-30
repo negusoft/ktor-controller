@@ -41,7 +41,7 @@ object ParamDetectors {
         override fun detect(param: KParameter): ParamMapping? {
             val annotation = param.findAnnotation<PathParam>() ?: return null
             val name = annotation.name.takeIf { it.isNotEmpty() } ?: param.name ?: error("Unexpected error: Unnamed property $param")
-            return { it.parameters[name] }
+            return checkedParamDetector(param) { it.parameters[name] }
         }
     }
 
@@ -49,7 +49,17 @@ object ParamDetectors {
         override fun detect(param: KParameter): ParamMapping? {
             val annotation = param.findAnnotation<QueryParam>() ?: return null
             val name = annotation.name.takeIf { it.isNotEmpty() } ?: param.name ?: error("Unexpected error: Unnamed property $param")
-            return { it.request.queryParameters[name] }
+            return checkedParamDetector(param) { it.request.queryParameters[name] }
         }
+    }
+}
+
+private inline fun checkedParamDetector(param: KParameter, crossinline mapping: ParamMapping): ParamMapping {
+    // IF it can be nullable, no check is needed
+    if (param.type.isMarkedNullable)
+        return { mapping(it) }
+
+    return {
+        mapping(it) ?: error("Null value received for non nullable param '${param.name}'")
     }
 }
