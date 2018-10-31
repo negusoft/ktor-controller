@@ -3,6 +3,7 @@ package com.negusoft.ktor.controller.sample
 import com.negusoft.ktor.controller.reflect.setupController
 import io.ktor.application.*
 import io.ktor.features.*
+import io.ktor.gson.gson
 import io.ktor.html.*
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -28,6 +29,9 @@ fun Application.main() {
         exception<Throwable> { e ->
             call.respondText(e.localizedMessage, ContentType.Text.Plain, HttpStatusCode.InternalServerError)
         }
+    }
+    install(ContentNegotiation) {
+        gson()
     }
     install(CallLogging)
     routing {

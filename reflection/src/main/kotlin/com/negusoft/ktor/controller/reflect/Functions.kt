@@ -5,6 +5,8 @@ import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpMethod
 import io.ktor.pipeline.PipelineInterceptor
+import io.ktor.response.respond
+import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.Routing
 import io.ktor.routing.method
@@ -19,7 +21,7 @@ interface FunctionDetector {
      * It is called once during the route mapping, not for each request call.
      * Returns null if it can't handle the given function.
      */
-    fun detect(owner: Any, func: KFunction<*>, paramDetectors: List<ParamDetector>): FunctionMapping?
+    fun detect(owner: Any, func: KFunction<*>, paramDetectors: List<ParamDetector>, resultDetectors: List<ResultDetector>): FunctionMapping?
 }
 
 /*
@@ -55,27 +57,30 @@ object FunctionDetectors {
 
 private inline fun <reified T : Annotation> functionDetector(method: HttpMethod, crossinline path: (T) -> String?) : FunctionDetector
     = object : FunctionDetector {
-        override fun detect(owner: Any, func: KFunction<*>, paramDetectors: List<ParamDetector>): FunctionMapping? {
+        override fun detect(owner: Any, func: KFunction<*>, paramDetectors: List<ParamDetector>, resultDetectors: List<ResultDetector>): FunctionMapping? {
             val annotation = func.findAnnotation<T>() ?: return null
             val thePath = path(annotation)
 
             val paramMappings = func.getParameterMappings(owner, paramDetectors)
-            val handler = func.toFunctionCall(paramMappings)
+            val resultMapping = func.getResultMapping(resultDetectors)
+            val handler = func.toFunctionCall(paramMappings, resultMapping)
             return functionMapping(thePath, method) { handle(handler) }
         }
 
     }
 
-private fun <R> KFunction<R>.toFunctionCall(paramMappings: List<ParamMapping>): PipelineInterceptor<Unit, ApplicationCall> {
+private fun <R> KFunction<R>.toFunctionCall(paramMappings: List<ParamMapping>, responseMapping: ResultMapping<R>?): PipelineInterceptor<Unit, ApplicationCall> {
     return if (isSuspend) {
         { _ ->
             val params = paramMappings.map { it(call) }.toTypedArray()
-            callSuspend(*params)
+            val result = callSuspend(*params)
+            responseMapping?.invoke(call, result)
         }
     } else {
         { _ ->
             val params = paramMappings.map { it(call) }.toTypedArray()
-            call(*params)
+            val result = call(*params)
+            responseMapping?.invoke(call, result)
         }
     }
 }
@@ -94,4 +99,11 @@ private fun <R> KFunction<R>.getParameterMappings(owner: Any, paramDetectors: Li
         // When no detectors recognise the parameter
         error("Param not '${param.name}' supported in ${this}")
     }
+}
+
+private fun <R> KFunction<R>.getResultMapping(resultDetectors: List<ResultDetector>): ResultMapping<R>? {
+    for (detector in resultDetectors) {
+        detector.detect(this)?.let { return it }
+    }
+    return null
 }

@@ -16,17 +16,24 @@ import io.ktor.routing.get
 @RouteController
 class HelloController {
 
-    fun getHello(name: String): String {
-        return "Hello $name!"
+    @Get("/{name}")
+    fun getHello(@PathParam name: String) : String {
+        return "[HelloController] Hello $name!"
     }
 
-    @Get("/{name}")
+    @Get("object/{name}")
+    fun getHelloObject(@PathParam name: String) : HelloResponse {
+        return HelloResponse("[HelloController] Hello $name!")
+    }
+
+    @Get("suspend/{name}")
     suspend fun getHelloWithCall(call: ApplicationCall, @PathParam name: String, @QueryParam query: String) {
-//        val name = call.parameters["name"] ?: "world"
         call.respondText("[HelloController] Hello $name! by $query")
     }
 
 }
+
+data class HelloResponse(val greeting: String)
 
 /**
  * This extension should ideally be generated at compile time.

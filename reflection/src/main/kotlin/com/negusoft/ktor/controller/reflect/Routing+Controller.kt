@@ -22,18 +22,24 @@ fun <T : Any> Routing.setupController(controller: T) {
 private fun <T : Any> Routing.setupFunctions(controller: Any, kclass: KClass<out T>) {
     for (function in kclass.functions) {
         for (detector in FunctionDetectors.AllDetectors) {
-            val functionMapping = detector.detect(controller, function, defaultParamDetectors)
+            val functionMapping = detector.detect(controller, function, defaultParamDetectors, defaultResultDetectors)
             if (functionMapping != null) {
                 functionMapping.invoke(this)
                 break
             }
         }
-        FunctionDetectors.GetDetector?.detect(controller, function, defaultParamDetectors)?.invoke(this)
+        FunctionDetectors.GetDetector?.detect(controller, function, defaultParamDetectors, defaultResultDetectors)?.invoke(this)
     }
 }
 
-private val defaultParamDetectors = listOf<ParamDetector>(
+private val defaultParamDetectors = listOf(
         ParamDetectors.CallDetector,
         ParamDetectors.PathParamDetector,
         ParamDetectors.QueryParamDetector
+)
+
+private val defaultResultDetectors = listOf(
+        ResultDetectors.UnitDetector,
+        ResultDetectors.StringDetector,
+        ResultDetectors.ObjectDetector
 )
