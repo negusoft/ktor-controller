@@ -1,6 +1,5 @@
-package com.negusoft.ktor.controller.reflect
+package com.negusoft.ktor.controller
 
-import com.negusoft.ktor.controller.RouteController
 import io.ktor.routing.Routing
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
@@ -28,7 +27,7 @@ private fun <T : Any> Routing.setupFunctions(controller: Any, kclass: KClass<out
                 break
             }
         }
-        FunctionDetectors.GetDetector?.detect(controller, function, defaultParamDetectors, defaultResultDetectors)?.invoke(this)
+        FunctionDetectors.GetDetector.detect(controller, function, defaultParamDetectors, defaultResultDetectors)?.invoke(this)
     }
 }
 

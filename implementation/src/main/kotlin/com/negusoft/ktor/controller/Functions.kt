@@ -1,12 +1,9 @@
-package com.negusoft.ktor.controller.reflect
+package com.negusoft.ktor.controller
 
-import com.negusoft.ktor.controller.*
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpMethod
 import io.ktor.pipeline.PipelineInterceptor
-import io.ktor.response.respond
-import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.Routing
 import io.ktor.routing.method
@@ -41,13 +38,13 @@ fun functionMapping(path: String?, method: HttpMethod, call: Route.() -> Unit): 
 /****************    Detector implementations    **************/
 
 object FunctionDetectors {
-    val GetDetector = functionDetector<Get>(HttpMethod.Get) { it.path}
-    val PostDetector = functionDetector<Post>(HttpMethod.Post) { it.path}
-    val PutDetector = functionDetector<Put>(HttpMethod.Put) { it.path}
-    val PatchDetector = functionDetector<Patch>(HttpMethod.Patch) { it.path}
-    val DeleteDetector = functionDetector<Delete>(HttpMethod.Delete) { it.path}
-    val HeadDetector = functionDetector<Head>(HttpMethod.Head) { it.path}
-    val OptionsDetector = functionDetector<Options>(HttpMethod.Options) { it.path}
+    val GetDetector = functionDetector<Get>(HttpMethod.Get) { it.path }
+    val PostDetector = functionDetector<Post>(HttpMethod.Post) { it.path }
+    val PutDetector = functionDetector<Put>(HttpMethod.Put) { it.path }
+    val PatchDetector = functionDetector<Patch>(HttpMethod.Patch) { it.path }
+    val DeleteDetector = functionDetector<Delete>(HttpMethod.Delete) { it.path }
+    val HeadDetector = functionDetector<Head>(HttpMethod.Head) { it.path }
+    val OptionsDetector = functionDetector<Options>(HttpMethod.Options) { it.path }
 
     val AllDetectors = listOf(
             GetDetector, PostDetector, PutDetector, PatchDetector,

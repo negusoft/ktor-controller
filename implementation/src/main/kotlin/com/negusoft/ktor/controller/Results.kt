@@ -1,4 +1,4 @@
-package com.negusoft.ktor.controller.reflect
+package com.negusoft.ktor.controller
 
 import io.ktor.application.ApplicationCall
 import io.ktor.response.respond
@@ -32,10 +32,6 @@ object ResultDetectors {
             if (func.returnType != Unit::class.createType())
                 return null
             return { _, _ -> }
-        }
-
-        private inline fun <reified T> hasStringResult(func: KFunction<T>): Boolean {
-            return T::class == String::class
         }
     }
 

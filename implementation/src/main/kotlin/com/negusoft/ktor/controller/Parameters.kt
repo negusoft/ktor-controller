@@ -1,7 +1,5 @@
-package com.negusoft.ktor.controller.reflect
+package com.negusoft.ktor.controller
 
-import com.negusoft.ktor.controller.PathParam
-import com.negusoft.ktor.controller.QueryParam
 import io.ktor.application.ApplicationCall
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.createType

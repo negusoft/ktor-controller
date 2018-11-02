@@ -51,8 +51,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "ch.qos.logback:logback-classic:$logback_version"
 
-//    implementation project(":core")
-    compile project(":reflection")
+    compile project(":implementation")
 }
 
 kotlin.experimental.coroutines = 'enable'
