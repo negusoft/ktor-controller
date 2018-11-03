@@ -21,6 +21,7 @@ sourceSets {
         kotlin.srcDirs += [ 'src/main/kotlin' ]
         resources.srcDirs += [ 'src/main/resources' ]
     }
+    test.kotlin.srcDirs += [ 'src/test' ]
 }
 
 dependencies {
@@ -28,6 +29,12 @@ dependencies {
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "io.ktor:ktor-server-netty:$ktor_version"
+
+//    testCompile "kotlin-test-annotations-common:$kotlin_version"
+    testCompile "io.ktor:ktor-gson:$ktor_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit5:$kotlin_version"
+//    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile "io.ktor:ktor-server-test-host:$ktor_version"
 }
 
 compileKotlin {

@@ -27,7 +27,6 @@ private fun <T : Any> Routing.setupFunctions(controller: Any, kclass: KClass<out
                 break
             }
         }
-        FunctionDetectors.GetDetector.detect(controller, function, defaultParamDetectors, defaultResultDetectors)?.invoke(this)
     }
 }
 

@@ -4,7 +4,7 @@ group 'com.negusoft.ktor.controller'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.3.0-rc-131'
+    ext.kotlin_version = '1.3.0'
 
     repositories {
         jcenter()

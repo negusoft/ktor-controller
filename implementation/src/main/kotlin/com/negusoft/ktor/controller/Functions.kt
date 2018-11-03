@@ -8,7 +8,8 @@ import io.ktor.routing.Route
 import io.ktor.routing.Routing
 import io.ktor.routing.method
 import io.ktor.routing.route
-import kotlin.reflect.*
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
 import kotlin.reflect.full.callSuspend
 import kotlin.reflect.full.findAnnotation
 
@@ -94,7 +95,7 @@ private fun <R> KFunction<R>.getParameterMappings(owner: Any, paramDetectors: Li
         }
 
         // When no detectors recognise the parameter
-        error("Param not '${param.name}' supported in ${this}")
+        error("Param '${param.name}' not supported in ${this}")
     }
 }
 
