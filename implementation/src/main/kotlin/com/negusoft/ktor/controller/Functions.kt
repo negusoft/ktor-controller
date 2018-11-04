@@ -26,7 +26,7 @@ interface FunctionDetector {
  * Registers the function in the routing mechanism.
  * It is called once during the route mapping, not for each request call.
  */
-typealias FunctionMapping = Routing.() -> Unit
+typealias FunctionMapping = Route.() -> Unit
 
 fun functionMapping(path: String?, method: HttpMethod, call: Route.() -> Unit): FunctionMapping = {
     if (path != null) {
