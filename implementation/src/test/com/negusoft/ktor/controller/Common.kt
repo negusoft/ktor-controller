@@ -10,6 +10,7 @@ import io.ktor.server.testing.withTestApplication
 /**
  * Shortcut for the common test application setup with the given controller.
  */
+@UseExperimental(KtorExperimentalControllersAPI::class)
 fun <C : Any, R> withControllerTestApplication(controller: C, test: TestApplicationEngine.() -> R): R
         = withTestApplication({
     install(Controllers)

@@ -10,6 +10,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.functions
 
+@KtorExperimentalControllersAPI
 class Controllers private constructor(
         private val application: Application,
         private val configuration: Configuration

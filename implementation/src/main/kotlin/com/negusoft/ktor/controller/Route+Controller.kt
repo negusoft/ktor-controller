@@ -1,3 +1,5 @@
+@file:UseExperimental(KtorExperimentalControllersAPI::class)
+
 package com.negusoft.ktor.controller
 
 import io.ktor.application.Application
@@ -20,6 +22,7 @@ val Application.controllers: Controllers get() = feature(Controllers)
  * Setup the given controller: class annotated with @RouteController.
  * It reads the objects annotations to determine the path to be and the methods to set up.
  */
+@UseExperimental(KtorExperimentalControllersAPI::class)
 fun <T : Any> Route.setupController(controller: T) {
     application.controllers.setupController(this, controller)
 }
@@ -28,6 +31,7 @@ fun <T : Any> Route.setupController(controller: T) {
  * Setup the given controller: class annotated with @RouteController in the given path.
  * It reads the objects annotations to determine the path to be and the methods to set up.
  */
+@UseExperimental(KtorExperimentalControllersAPI::class)
 fun <T : Any> Route.setupController(path: String, controller: T) {
     application.controllers.setupController(this, path, controller)
 }

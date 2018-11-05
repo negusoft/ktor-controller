@@ -1,5 +1,12 @@
 package com.negusoft.ktor.controller
 
+/**
+ * API marked with this annotation is experimental and is not guaranteed to be stable.
+ */
+@Experimental(level = Experimental.Level.WARNING)
+annotation class KtorExperimentalControllersAPI
+
+@KtorExperimentalControllersAPI
 @Target(AnnotationTarget.CLASS)
 annotation class RouteController(val path: String = "")
 

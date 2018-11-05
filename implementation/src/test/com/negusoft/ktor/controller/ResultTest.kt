@@ -19,6 +19,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.fail
 
+@UseExperimental(KtorExperimentalControllersAPI::class)
 class ResultTest {
 
     fun <R> withControllerTestApplication(test: TestApplicationEngine.() -> R): R
