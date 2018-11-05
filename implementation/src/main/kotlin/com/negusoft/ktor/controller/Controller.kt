@@ -80,6 +80,7 @@ class Controllers private constructor(
      */
     class Configuration {
         val customParamDetectors = mutableListOf<ParamDetector>()
+        var autoSetupControllers = false
     }
 
     /**
