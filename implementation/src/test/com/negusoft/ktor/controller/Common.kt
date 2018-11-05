@@ -12,6 +12,7 @@ import io.ktor.server.testing.withTestApplication
  */
 fun <C : Any, R> withControllerTestApplication(controller: C, test: TestApplicationEngine.() -> R): R
         = withTestApplication({
+    install(Controllers)
     install(ContentNegotiation) {
         gson()
     }

@@ -26,6 +26,7 @@ class PathTest {
 
     fun <R> withPathTestApplication(test: TestApplicationEngine.() -> R): R
             = withTestApplication({
+        install(Controllers)
         routing {
             setupController(ControllerNoPath())
             setupController(ControllerWithPath())
