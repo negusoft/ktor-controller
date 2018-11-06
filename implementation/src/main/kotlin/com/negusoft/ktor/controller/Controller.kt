@@ -76,15 +76,14 @@ class Controllers private constructor(
     }
 
     /**
-     * Configuration for [Controller] feature
+     * Configuration for [Controllers] feature
      */
     class Configuration {
         val customParamDetectors = mutableListOf<ParamDetector>()
-        var autoSetupControllers = false
     }
 
     /**
-     * Installable feature for [Controller].
+     * Installable feature for [Controllers].
      */
     companion object Feature : ApplicationFeature<Application, Controllers.Configuration, Controllers> {
         override val key: AttributeKey<Controllers> = AttributeKey("Controller")
